@@ -1,8 +1,12 @@
 version: 2
 
 sources:
- - name: gz_raw_date AS raw
-   tables:
-     - name: raw_gz_sales AS sales
-     - name: raw_gz_product AS product
-     - name: raw_gz_ship AS ship
+  - name:  raw
+    schema: gz_raw_data 
+    tables:
+      - name: sales
+        identifier:  ventes_gz_brutes
+      - name: product
+        identifier: produit_brut_gz
+      - name: ship
+        identifier: raw_gz_ship
