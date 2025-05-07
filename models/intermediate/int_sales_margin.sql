@@ -1,33 +1,14 @@
-with sales as (
+-- models/intermediate/int_sales_margin.sql
 
-    select *
-    from {{ ref('stg_raw__sales') }}
-
-), product as (
-
-    select *
-    from {{ ref('stg_raw__product') }}
-
-), joined as (
-
-    select
-        sales.date_date,
-        sales.orders_id,
-        sales.products_id,
-        sales.quantity,
-        sales.revenue,
-        product.purchase_price,
-
-        -- Calcule du coût d'achat
-        sales.quantity * product.purchase_price as purchase_cost,
-
-        -- Calcule de la marge
-        sales.revenue - (sales.quantity * product.purchase_price) as margin
-
-    from sales
-    left join product
-        on sales.products_id = product.products_id
-
-)
-
-select * from joined
+SELECT
+    s.products_id,
+    s.date_date,
+    s.orders_id,
+    s.revenue,
+    s.quantity,
+    p.purchase_price,
+    ROUND(s.quantity * p.purchase_price, 2) AS purchase_cost,
+    ROUND(s.revenue - s.quantity * p.purchase_price, 2) AS margin
+FROM {{ ref('stg_raw__sales') }} s
+LEFT JOIN {{ ref('stg_raw__product') }} p 
+    USING (products_id) 
