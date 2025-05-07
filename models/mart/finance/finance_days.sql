@@ -1,5 +1,4 @@
-
- SELECT
+SELECT
      date_date
      ,COUNT(orders_id) AS nb_transactions
      ,ROUND(SUM(revenue),0) AS revenue
